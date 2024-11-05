@@ -11,38 +11,51 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const http = require('http'); // Requerimos 'http' para combinar con Socket.IO
-const { Server } = require('socket.io'); // Requerimos el servidor de Socket.IO
-const PORT = 3000;
+const http = require('http'); 
+const { Server } = require('socket.io'); 
+const PORT = process.env.PORT || 3000;
 
 // Configuración de CORS
-app.use(cors({ origin: 'http://localhost:5173' }));
+const allowedOrigins = [
+  'http://localhost:5173', // Para desarrollo
+  'https://amixter.netlify.app', // Para producción
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origen no permitido por CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 app.use(express.json());
 
 // Configuración de archivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Configuración de WebSocket
-const server = http.createServer(app); // Crear servidor HTTP usando Express
+// Configuración de WebSocket para Socket.IO con CORS
+const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173', // El frontend
-    methods: ['GET', 'POST'], // Métodos permitidos
+    origin: allowedOrigins,
+    methods: ['GET', 'POST'],
   },
 });
 
-app.set('socketio', io); // Guardar la instancia de Socket.IO para usarla en los controladores
+// Guardar la instancia de Socket.IO para usarla en otros módulos
+app.set('socketio', io);
 
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado:', socket.id);
-
-  // Evento de desconexión
   socket.on('disconnect', () => {
     console.log('Cliente desconectado:', socket.id);
   });
 });
 
-// Rutas
+// Definir rutas de la API
 app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/friends', friendsRoutes);
