@@ -23,7 +23,7 @@ module.exports = {
       password: process.env.DB_PASSWORD, // Variable de entorno para la contraseña
       database: process.env.DB_NAME, // Variable de entorno para la base de datos
       port: process.env.DB_PORT || 5432,
-      ssl: { rejectUnauthorized: false }, // SSL requerido en producción
+      ssl: { rejectUnauthorized: false }, // Configuración SSL para producción
     },
     migrations: {
       directory: './migrations',
