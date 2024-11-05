@@ -18,10 +18,10 @@ module.exports = {
   production: {
     client: 'pg',
     connection: {
-      host: process.env.DB_HOST, // Variable de entorno para el host en Render
-      user: process.env.DB_USER, // Variable de entorno para el usuario
-      password: process.env.DB_PASSWORD, // Variable de entorno para la contraseña
-      database: process.env.DB_NAME, // Variable de entorno para la base de datos
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       port: process.env.DB_PORT || 5432,
       ssl: { rejectUnauthorized: false }, // Configuración SSL para producción
     },
@@ -31,5 +31,5 @@ module.exports = {
     seeds: {
       directory: './seeds',
     },
-  }
+  },
 };
