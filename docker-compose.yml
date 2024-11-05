@@ -15,11 +15,11 @@ services:
     build:
       context: .
     environment:
-    - DB_HOST=db
-    - DB_USER=devWebpro
-    - DB_PASSWORD=amixte123
-    - DB_NAME=social_network_db
-    - JWT_SECRET=tu_secreto_super_seguro
+      - DB_HOST=db
+      - DB_USER=devWebpro
+      - DB_PASSWORD=amixte123
+      - DB_NAME=social_network_db
+      - JWT_SECRET=tu_secreto_super_seguro
     depends_on:
       - db
     ports:
@@ -35,8 +35,8 @@ services:
     ports:
       - "8081:80"
     environment:
-      - PGADMIN_DEFAULT_EMAIL=devpro@env.com       # Reemplaza con tu email deseado
-      - PGADMIN_DEFAULT_PASSWORD=amixte123    # Reemplaza con tu contraseña deseada
+      - PGADMIN_DEFAULT_EMAIL=devpro@env.com
+      - PGADMIN_DEFAULT_PASSWORD=amixte123
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
